@@ -22,7 +22,7 @@ Most projects can probably sidestep these issues by standardizing on a Docker im
 
 # Installing support for other languages
 
-Lesson 2 adds support for Go and Rust. Here's the section of `WORKSPACE` that loads the Go toolchain:
+Lesson 2 adds support for [Go](https://golang.org/) and [Rust](https://www.rust-lang.org/). Here's the section of `WORKSPACE` that loads the Go toolchain:
 
 ```
 #
