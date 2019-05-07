@@ -1,0 +1,55 @@
+digraph mygraph {
+  node [shape=box];
+"//cpp:basic-app"[color="red", fontcolor="red"]
+"//cpp:basic-app" -> "//cpp:basic"[color="red"]
+"//cpp:basic-app" -> "//cpp:basic_app.cpp"
+"//cpp:basic_app.cpp"
+"//cpp:basic"[color="red", fontcolor="red"]
+"//cpp:basic" -> "//cpp:basic_library.h\n//cpp:basic_library.cpp"[color="red"]
+"//cpp:basic_library.h\n//cpp:basic_library.cpp"[color="red"]
+
+"//cpp:basic-test"[color="red", fontcolor="red"]
+"//cpp:basic-test" -> "//cpp:basic"[color="red"]
+"//cpp:basic-test" -> "@gtest//:main"
+"//cpp:basic-test" -> "//cpp:basic_library_test.cpp"
+"@gtest//:main"
+"@gtest//:main" -> "@gtest//:library"
+"//cpp:basic_library_test.cpp"
+"//cpp:basic_library.h\n//cpp:basic_library.cpp"[color="red", fontcolor="red"]
+"@gtest//:library"
+
+"//java/jni:command"[color="red", fontcolor="red"]
+"//java/jni:command" -> "//java/jni:jnilib"[color="red"]
+"//java/jni:command" -> "//java/basic:infoprinter"
+"//java/jni:command" -> "//java/jni:src/main/java/com/github/sayrer/jni/CommandLineApp.java"
+"//java/jni:src/main/java/com/github/sayrer/jni/CommandLineApp.java"
+"//java/jni:jnilib"[color="red", fontcolor="red"]
+"//java/jni:jnilib" -> "//java/jni:libdemocpp.dylib"[color="red"]
+"//java/jni:jnilib" -> "//java/jni:src/main/java/com/github/sayrer/jni/JNILib.java"
+"//java/jni:src/main/java/com/github/sayrer/jni/JNILib.java"
+"//java/basic:infoprinter"
+"//java/basic:infoprinter" -> "//java/basic:src/main/java/com/github/sayrer/basic/InfoPrinter.java"
+"//java/basic:src/main/java/com/github/sayrer/basic/InfoPrinter.java"
+"//java/jni:libdemocpp.dylib"[color="red", fontcolor="red"]
+"//java/jni:libdemocpp.dylib" -> "//java/jni:democpp-lib"[color="red"]
+"//java/jni:democpp-lib"[color="red", fontcolor="red"]
+"//java/jni:democpp-lib" -> "//cpp:basic"[color="red"]
+"//java/jni:democpp-lib" -> "//java/jni:cpp/demo.cpp"
+"//java/jni:democpp-lib" -> "//jni:jniheaders"
+"//jni:jniheaders"
+"//jni:jniheaders" -> "//jni:jni.h"
+"//jni:jniheaders" -> "//jni:jni_md.h"
+"//jni:jni_md.h"
+"//jni:jni.h"
+"//java/jni:cpp/demo.cpp"
+
+"//java/basic:command"
+"//java/basic:command" -> "//java/basic:infoprinter"
+"//java/basic:command" -> "//java/basic:src/main/java/com/github/sayrer/basic/CommandLineApp.java"
+"//java/basic:src/main/java/com/github/sayrer/basic/CommandLineApp.java"
+
+"//java/basic:test"
+"//java/basic:test" -> "//java/basic:infoprinter"
+"//java/basic:test" -> "//java/basic:src/test/java/com/github/sayrer/basic/TestInfoPrinter.java"
+"//java/basic:src/test/java/com/github/sayrer/basic/TestInfoPrinter.java"
+}
