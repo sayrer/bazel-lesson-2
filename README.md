@@ -1,11 +1,11 @@
-# Bazel Lesson 2
+# Bazel Lesson 2 (incomplete WIP)
 
 If you haven't read [Bazel Lesson 1](https://github.com/sayrer/bazel-lesson-1) yet, go do that now. It's not a very long read, and skipping it would only be cheating yourself.
 
 Lesson 1 might have seemed like a bit of a parlor trick, where one build system just happened to be able to build both C++ and Java, and then combine them with JNI. Lesson 2 will show that this is a general pattern in Bazel, and not a narrowly-defined capability. 
 To recap, Lesson 1 built a number of C++ and Java tests and binaries. It then showed that only the build products using a basic C++ static library had precise dependencies on it. For example, if the static library were changed, only tests that actually depended on it would need to be rerun. This feature is quite a bit more powerful than incremental compilation as seen in many compiler toolchains--it is cross-language and reflects test results and dependencies. Here's an illustration that shows which build products actually depend on [Lesson 1](https://github.com/sayrer/bazel-lesson-1)'s basic C++ static library:
 
-[pic]
+![JNI dependency graph](./jni_graph.png)
 
 Lesson 1 didn't go into the contents of [its WORKSPACE](https://github.com/sayrer/bazel-lesson-1/blob/master/WORKSPACE), and there really isn't much in there. All it does is load one function, `http_archive`, which gives Bazel the ability to download files over http. The `http_archive` rule has smarts to decompress `.zip`, `.tar.gz`, `.bzip2`, etc, and then use the supplied `BUILD` file to create a build product from its decompressed contents. In this case, `gtest.BUILD` builds the GoogleTest C++ library, and it's used in the C++ tests.
 
