@@ -2,7 +2,8 @@
 
 If you haven't read [Bazel Lesson 1](https://github.com/sayrer/bazel-lesson-1) yet, go do that now. It's not a very long read, and skipping it would only be cheating yourself.
 
-Lesson 1 might have seemed like a bit of a parlor trick, where one build system just happened to be able to build both C++ and Java, and then combine them with JNI. Lesson 2 will show that this is a general pattern in Bazel, and not a narrowly-defined capability. 
+Lesson 1 might have seemed like a bit of a parlor trick, where one build system just happened to be able to build both C++ and Java, and then combine them with JNI. Lesson 2 will show that this is a general pattern in Bazel, and not a narrowly-defined capability.
+
 To recap, Lesson 1 built a number of C++ and Java tests and binaries. It then showed that only the build products using a basic C++ static library had precise dependencies on it. For example, if the static library were changed, only tests that actually depended on it would need to be rerun. This feature is quite a bit more powerful than incremental compilation as seen in many compiler toolchains--it is cross-language and reflects test results and dependencies. Here's an illustration that shows which build products actually depend on [Lesson 1](https://github.com/sayrer/bazel-lesson-1)'s basic C++ static library:
 
 ![JNI dependency graph](./jni_graphic.png)
@@ -67,6 +68,7 @@ go_binary(
 
 There's nothing too surprising here in comparison to the C++ and Java projects. At the top of the file, we load the Go extensions to Bazel. In the `go_library` rule, there's an argument called `importpath` that allows other Go files to load the library with Go's URL-inspired import syntax.
 
+```
 #
 # Skylib (Rust rules depend on this)
 #
