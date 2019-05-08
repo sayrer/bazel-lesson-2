@@ -42,7 +42,7 @@ For Go, we'll first build a project with hand-written Bazel rules.
 
 ```
 $ more go/basic/BUILD 
-load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library", "go_test")
+load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
 
 go_library(
     name = "go_default_library",
@@ -58,15 +58,65 @@ go_test(
     srcs = ["basic_test.go"],
     embed = [":go_default_library"],
 )
+```
+
+There's nothing too surprising here in comparison to the C++ and Java projects. At the top of the file, the load function makes the Go extensions available to Bazel. In the `go_library` rule, there's an argument called `importpath` that allows other Go files to load the library with Go's URL-inspired import syntax.
+
+There's also add a simple command line app in a subpackage:
+
+```
+$ more go/basic/cmd/BUILD 
+load("@io_bazel_rules_go//go:def.bzl", "go_binary")
 
 go_binary(
     name = "command",
     srcs = ["main.go"],
-    deps = [":go_default_library"],
+    deps = ["//go/basic:go_default_library"],
 )
 ```
+It can be run with the same Bazel command as the C++ and Java apps.
 
-There's nothing too surprising here in comparison to the C++ and Java projects. At the top of the file, we load the Go extensions to Bazel. In the `go_library` rule, there's an argument called `importpath` that allows other Go files to load the library with Go's URL-inspired import syntax.
+```
+$ bazel run //go/basic/cmd:command
+INFO: Analysed target //go/basic/cmd:command (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+Target //go/basic/cmd:command up-to-date:
+  bazel-bin/go/basic/cmd/darwin_amd64_stripped/command
+INFO: Elapsed time: 0.185s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Build completed successfully, 1 total action
+
+A Go string: "Hello from Go"
+
+```
+
+The test runs the same way as well (note the caching in the second pass):
+
+```
+$ bazel test //go/basic/...
+INFO: Analysed 3 targets (0 packages loaded, 0 targets configured).
+INFO: Found 2 targets and 1 test target...
+INFO: Elapsed time: 0.899s, Critical Path: 0.68s
+INFO: 6 processes: 6 darwin-sandbox.
+INFO: Build completed successfully, 6 total actions
+//go/basic:go_default_test                                               PASSED in 0.1s
+
+Executed 1 out of 1 test: 1 test passes.
+INFO: Build completed successfully, 6 total actions
+
+$ bazel test //go/basic/...
+INFO: Analysed 3 targets (0 packages loaded, 0 targets configured).
+INFO: Found 2 targets and 1 test target...
+INFO: Elapsed time: 0.198s, Critical Path: 0.01s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+//go/basic:go_default_test                                      (cached) PASSED in 0.1s
+
+Executed 0 out of 1 test: 1 test passes.
+INFO: Build completed successfully, 1 total action
+```
+
 
 ```
 #

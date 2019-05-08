@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/sayrer/bazeldemo/basic"
+	"github.com/sayrer/bazel-lesson-2/go/basic"
 )
 
 func main() {
