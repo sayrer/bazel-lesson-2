@@ -14,8 +14,8 @@ java_library(
 java_test(
     name = "test",
     srcs = glob(["src/test/java/com/github/sayrer/basic/*.java"]),
-	test_class = "com.github.sayrer.basic.TestInfoPrinter",
+    test_class = "com.github.sayrer.basic.TestInfoPrinter",
     deps = [
-         ":infoprinter",
-    ]
+        ":infoprinter",
+    ],
 )

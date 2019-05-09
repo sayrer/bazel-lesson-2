@@ -1,19 +1,19 @@
 cc_library(
     name = "democpp-lib",
     srcs = [
-        "cpp/demo.cpp"
+        "cpp/demo.cpp",
     ],
     copts = ["-v"],
     visibility = ["//visibility:public"],
     deps = [
         "//cpp:basic",
-        "//jni:jniheaders"
+        "//jni:jniheaders",
     ],
 )
 
 cc_binary(
     name = "libdemocpp.dylib",
-    deps = [ ":democpp-lib" ],
+    deps = [":democpp-lib"],
     linkshared = 1,
 )
 

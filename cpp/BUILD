@@ -3,7 +3,7 @@ cc_binary(
     srcs = ["basic_app.cpp"],
     deps = [
         ":basic",
-    ]
+    ],
 )
 
 cc_library(
