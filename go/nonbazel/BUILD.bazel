@@ -1,0 +1,9 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["nonbazel.go"],
+    importpath = "github.com/sayrer/bazel-lesson-2/go/nonbazel",
+    visibility = ["//visibility:public"],
+    deps = ["@io_rsc_quote//:go_default_library"],
+)
