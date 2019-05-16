@@ -174,7 +174,7 @@ This `BUILD` file is valid, but the `@io_rsc_quote` dependency needs to be added
 $ bazel run //:gazelle -- update-repos -from_file=go/nonbazel/go.mod
 ```
 
-will add the required dependencies to `WORKSPACE`.
+will add the required dependencies to `WORKSPACE`:
 
 ```
 go_repository(
@@ -194,6 +194,46 @@ go_repository(
     commit = "14c0d48ead0c",
     importpath = "golang.org/x/text",
 )
+```
+
+## Combining C++ and Go with cgo
+
+In the `go/cgodemo` directory, there's a Bazel library that combines the C++ library in `cpp` with the Go library in `go/basic`.
+
+```
+$ more go/cgodemo/BUILD 
+load("@io_bazel_rules_go//go:def.bzl", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = [
+        "cgodemo.go",
+        "cpp-basic.h",
+        "cpp-basic.cpp"
+    ],
+    cgo = True,
+    importpath = "github.com/sayrer/bazel-lesson-2/go/cgodemo",
+    visibility = ["//visibility:public"],
+    cdeps = ["//cpp:basic"],
+)
+```
+
+There's a go file along with a small wrapper around the library C++ library. The library also has `cgo = True` set to get the right linker flags passed to the build command. There's a simple command line app in the `go/cgodemo/cmd` directory.
+
+```
+$ bazel run //go/cgodemo/cmd:command
+INFO: Analysed target //go/cgodemo/cmd:command (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+Target //go/cgodemo/cmd:command up-to-date:
+  bazel-bin/go/cgodemo/cmd/darwin_amd64_stripped/command
+INFO: Elapsed time: 0.257s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Build completed successfully, 1 total action
+
+A Go string: "Hello from Go"
+
+A Go string from C++: "I'm a C++ string!"
 ```
 
 ```
