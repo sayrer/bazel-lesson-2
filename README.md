@@ -235,6 +235,9 @@ A Go string: "Hello from Go"
 
 A Go string from C++: "I'm a C++ string!"
 ```
+## Rust
+
+This is the section of the `WORKSPACE` file that downloads the dependencies needed for the Rust rules. Skylib is a library of utilities for writing [Starlark](https://github.com/bazelbuild/starlark) (formerly known as Skylark), Bazel's extension and configuration language.
 
 ```
 #
@@ -250,16 +253,109 @@ http_archive(
 #
 # Rust Rules
 #
-http_archive(
-   name = "io_bazel_rules_rust",
-   sha256 = "19c546681b2e1d5f98ca5b7e9f28975682a19b0c18d80db2e25d79a949e5e57b",
-   strip_prefix = "rules_rust-761ef8f820a96c87a288b4f499b7f61772733f32",
-   urls = [
-       "https://github.com/bazelbuild/rules_rust/archive/761ef8f820a96c87a288b4f499b7f61772733f32.tar.gz",
-   ],
+git_repository(
+    name = "io_bazel_rules_rust",
+    commit = "d28b121396974a628b9cdb29b6ed7f4e370edb4e",
+    remote = "https://github.com/bazelbuild/rules_rust",
+    shallow_since = "1557167838 -0400",
 )
+
 load("@io_bazel_rules_rust//rust:repositories.bzl", "rust_repositories")
+
 rust_repositories()
+
 load("@io_bazel_rules_rust//:workspace.bzl", "bazel_version")
+
 bazel_version(name = "bazel_version")
 ```
+
+In `rust/hello_lib`, there's a Rust library and a variety of build styles and tests.
+
+```
+$ more rust/hello_lib/BUILD 
+package(default_visibility = ["//visibility:public"])
+
+load(
+    "@io_bazel_rules_rust//rust:rust.bzl",
+    "rust_library",
+    "rust_test",
+    "rust_doc",
+    "rust_doc_test",
+)
+
+rust_library(
+    name = "hello_lib",
+    srcs = [
+        "src/greeter.rs",
+        "src/lib.rs",
+    ],
+    rustc_flags = ["--cap-lints=allow"],
+    crate_features = ["default"],
+)
+
+rust_library(
+    name = "hello_dylib",
+    srcs = [
+        "src/greeter.rs",
+        "src/lib.rs",
+    ],
+    crate_type = "dylib",
+)
+
+rust_library(
+    name = "hello_cdylib",
+    srcs = [
+        "src/greeter.rs",
+        "src/lib.rs",
+    ],
+    crate_type = "cdylib",
+)
+
+rust_library(
+    name = "hello_staticlib",
+    srcs = [
+        "src/greeter.rs",
+        "src/lib.rs",
+    ],
+    crate_type = "staticlib",
+)
+
+rust_test(
+    name = "hello_lib_test",
+    crate = ":hello_lib",
+)
+
+rust_test(
+    name = "greeting_test",
+    srcs = ["tests/greeting.rs"],
+    deps = [":hello_lib"],
+)
+
+rust_doc(
+    name = "hello_lib_doc",
+    dep = ":hello_lib",
+)
+
+rust_doc_test(
+    name = "hello_lib_doc_test",
+    dep = ":hello_lib",
+)
+```
+
+There's a Rust binary in the `rust/hello_world` directory:
+
+```
+$ bazel run //rust/hello_world:hello_world
+INFO: Analyzed target //rust/hello_world:hello_world (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+Target //rust/hello_world:hello_world up-to-date:
+  bazel-bin/rust/hello_world/hello_world
+INFO: Elapsed time: 0.432s, Critical Path: 0.27s
+INFO: 1 process: 1 darwin-sandbox.
+INFO: Build completed successfully, 2 total actions
+INFO: Build completed successfully, 2 total actions
+
+Hello from Rust!
+
+```
+
