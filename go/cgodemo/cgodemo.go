@@ -1,8 +1,7 @@
 package cgodemo
 
 /*
-#include "cpp-basic.h"
-#include <stdlib.h>
+#include "cpp/basic_c.h"
 */
 import "C"
 import "unsafe"

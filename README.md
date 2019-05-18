@@ -198,23 +198,30 @@ go_repository(
 
 ## Combining C++ and Go with cgo
 
-In the `go/cgodemo` directory, there's a Bazel library that combines the C++ library in `cpp` with the Go library in `go/basic`.
+It's not possible to call C++ functions directly from Go, so there's a small C wrapper under `cpp`:
 
 ```
-$ more go/cgodemo/BUILD 
+cc_library(
+    name = "basic-c",
+    srcs = ["basic_c.cpp"],
+    hdrs = ["basic_c.h"],
+    visibility = ["//visibility:public"],
+    deps = [":basic"],
+)
+```
+
+In the `go/cgodemo` directory, there's a Bazel library that combines the C library in `cpp` with the Go library in `go/basic`. 
+
+```
 load("@io_bazel_rules_go//go:def.bzl", "go_library")
 
 go_library(
     name = "go_default_library",
-    srcs = [
-        "cgodemo.go",
-        "cpp-basic.h",
-        "cpp-basic.cpp"
-    ],
+    srcs = ["cgodemo.go"],
     cgo = True,
     importpath = "github.com/sayrer/bazel-lesson-2/go/cgodemo",
     visibility = ["//visibility:public"],
-    cdeps = ["//cpp:basic"],
+    cdeps = ["//cpp:basic-c"],
 )
 ```
 

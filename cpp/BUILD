@@ -13,6 +13,14 @@ cc_library(
     visibility = ["//visibility:public"],
 )
 
+cc_library(
+    name = "basic-c",
+    srcs = ["basic_c.cpp"],
+    hdrs = ["basic_c.h"],
+    visibility = ["//visibility:public"],
+    deps = [":basic"],
+)
+
 cc_test(
     name = "basic-test",
     srcs = ["basic_library_test.cpp"],
