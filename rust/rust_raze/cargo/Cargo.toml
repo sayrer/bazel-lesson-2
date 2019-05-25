@@ -10,6 +10,6 @@ num_cpus = "1.10.0"
 path = "fake_lib.rs"
 
 [raze]
-workspace_path = "//vendored/raze/cargo"
+workspace_path = "//rust/rust_raze/cargo"
 target = "x86_64-apple-darwin"
 output_buildfile_suffix = "BUILD.bazel"

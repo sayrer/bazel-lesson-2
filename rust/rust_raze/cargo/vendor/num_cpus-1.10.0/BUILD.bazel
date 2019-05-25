@@ -6,7 +6,7 @@ DO NOT EDIT! Replaced on runs of cargo-raze
 package(default_visibility = [
   # Public for visibility by "@raze__crate__version//" targets.
   #
-  # Prefer access through "//vendored/raze/cargo", which limits external
+  # Prefer access through "//rust/rust_raze/cargo", which limits external
   # visibility to explicit Cargo.toml dependencies.
   "//visibility:public",
 ])
@@ -31,7 +31,7 @@ rust_library(
     edition = "2015",
     srcs = glob(["**/*.rs"]),
     deps = [
-        "//vendored/raze/cargo/vendor/libc-0.2.55:libc",
+        "//rust/rust_raze/cargo/vendor/libc-0.2.55:libc",
     ],
     rustc_flags = [
         "--cap-lints=allow",

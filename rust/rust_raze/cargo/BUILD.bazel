@@ -10,5 +10,5 @@ licenses([
 ])
 alias(
     name = "num_cpus",
-    actual = "//vendored/raze/cargo/vendor/num_cpus-1.10.0:num_cpus",
+    actual = "//rust/rust_raze/cargo/vendor/num_cpus-1.10.0:num_cpus",
 )
