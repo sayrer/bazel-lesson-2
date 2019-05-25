@@ -276,7 +276,7 @@ load("@io_bazel_rules_rust//:workspace.bzl", "bazel_version")
 bazel_version(name = "bazel_version")
 ```
 
-In `rust/hello_lib`, there's a Rust library and a variety of build styles and tests.
+In `rust/hello_lib`, there's a Rust library and a variety of build styles and tests. Most of these files are lightly-altered versions of targets in the [rules_rust](https://github.com/bazelbuild/rules_rust) [examples](https://github.com/bazelbuild/rules_rust/tree/master/examples) directory.
 
 ```
 $ more rust/hello_lib/BUILD 
@@ -366,3 +366,39 @@ Hello from Rust!
 
 ```
 
+## Combining Rust and C++
+
+Rust provides a similar facility to Go's ["C" pseudo-package](https://golang.org/cmd/cgo/#hdr-Using_cgo_with_the_go_command) in the form of a crate called [libc](https://github.com/rust-lang/libc). This dependency is added to the `WORKSPACE`.
+
+```
+#
+# FFI for Rust
+#
+new_git_repository(
+    name = "libc",
+    build_file = "libc.BUILD",
+    remote = "https://github.com/rust-lang/libc",
+    commit = "6ec4f81a3852797410b80296d3afd61f2b255a36",
+    shallow_since = "1484672371 +0000"
+)
+```
+
+The `libc.BUILD` file shows an example of adapting an external crate with a straightforward build to Bazel.
+
+```
+load("@io_bazel_rules_rust//rust:rust.bzl", "rust_library")
+
+rust_library(
+    name = "libc",
+    srcs = glob(["src/**/*.rs"]),
+    visibility = ["//visibility:public"],
+)
+```
+
+In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go).
+
+
+
+## Building conventional Rust crates
+
+Many Rust programs rely 

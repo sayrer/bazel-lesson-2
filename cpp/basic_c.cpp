@@ -8,3 +8,7 @@ char* get_message() {
     std::strcpy(cstr, s.c_str());
     return cstr;
 }
+
+void free_message(char* cstr) {
+    delete(cstr);
+}

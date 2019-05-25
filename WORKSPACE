@@ -2,7 +2,7 @@
 # Bazel infrastructure
 #
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository", "new_git_repository")
 
 #
 # Go Rules
@@ -80,6 +80,17 @@ rust_repositories()
 load("@io_bazel_rules_rust//:workspace.bzl", "bazel_version")
 
 bazel_version(name = "bazel_version")
+
+#
+# FFI for Rust
+#
+new_git_repository(
+    name = "libc",
+    build_file = "libc.BUILD",
+    remote = "https://github.com/rust-lang/libc",
+    commit = "6ec4f81a3852797410b80296d3afd61f2b255a36",
+    shallow_since = "1484672371 +0000"
+)
 
 #
 # Testing for C++
