@@ -1,0 +1,15 @@
+[package]
+name = "compile_with_bazel"
+version = "0.1.0"
+authors = ["Robert Sayre <sayrer@gmail.com>"]
+
+[dependencies]
+num_cpus = "1.10.0"
+
+[lib]
+path = "fake_lib.rs"
+
+[raze]
+workspace_path = "//vendored/raze/cargo"
+target = "x86_64-apple-darwin"
+output_buildfile_suffix = "BUILD.bazel"

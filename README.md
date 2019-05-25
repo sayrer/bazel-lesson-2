@@ -395,10 +395,85 @@ rust_library(
 )
 ```
 
-In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go).
+In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go). The file `rust/rustcpp_lib/src/infoprinter.rs` wraps our C functions in a Rust struct. Its `Drop` implementation will free the C string when the Rust struct falls out of scope. Its `Deref` implementation will allow it to be treated as a `str` in Rust code.
 
+```
+use libc::c_char;
+use std::ops::Deref;
+use std::ffi::CStr;
 
+extern "C" {
+    fn get_message() -> *const c_char;
+    fn free_message(s: *const c_char);
+}
+
+pub struct InfoPrinter {
+    message: *const c_char,
+}
+
+impl Drop for InfoPrinter {
+    fn drop(&mut self) {
+        unsafe {
+            free_message(self.message);
+        }
+    }
+}
+
+impl InfoPrinter {
+    pub fn new() -> InfoPrinter {
+        InfoPrinter { message: unsafe { get_message() } }
+    }
+}
+
+impl Deref for InfoPrinter {
+    type Target = str;
+
+    fn deref<'a>(&'a self) -> &'a str {
+        let c_str = unsafe { CStr::from_ptr(self.message) };
+        c_str.to_str().unwrap()
+    }
+}
+```
+
+In `rust/rustcpp_cmd`, there's a binary that uses both the `hello_world` Rust library and the C/C++ wrapper library.
+
+```
+$ bazel run //rust/rustcpp_cmd
+INFO: Analyzed target //rust/rustcpp_cmd:rustcpp_cmd (0 packages loaded, 0 targets configured).
+INFO: Found 1 target...
+Target //rust/rustcpp_cmd:rustcpp_cmd up-to-date:
+  bazel-bin/rust/rustcpp_cmd/rustcpp_cmd
+INFO: Elapsed time: 0.138s, Critical Path: 0.00s
+INFO: 0 processes.
+INFO: Build completed successfully, 1 total action
+INFO: Build completed successfully, 1 total action
+
+Hello from Rust!
+
+I'm a C++ string!
+
+```
 
 ## Building conventional Rust crates
 
-Many Rust programs rely 
+Many Rust programs rely on a large number of dependencies from [crates.io](https://crates.io). At the moment, the [cargo-raze](https://github.com/google/cargo-raze) tool is the standard way to convert [crates.io](https://crates.io) dependencies to Bazel, but [rules_rust](https://github.com/bazelbuild/rules_rust) has a `cargo_crate` target on its roadmap, and the two projects will presumably merge.
+
+In `rust/rust_raze/cargo`, there's a fairly standard `Cargo.toml` file. Change to that directory, and install the `cargo` extensions for Bazel.
+
+```
+$ cd rust/rust_raze/cargo/
+$ cargo install cargo-vendor
+$ cargo generate-lockfile
+$ cargo vendor -x
+$ cargo raze
+Loaded override settings: RazeSettings {
+    workspace_path: "//vendored/raze/cargo",
+    target: "x86_64-apple-darwin",
+    crates: {},
+    gen_workspace_prefix: "raze",
+    genmode: Vendored,
+    output_buildfile_suffix: "BUILD.bazel"
+}
+Generated .//vendor/libc-0.2.55/BUILD.bazel successfully                                                                                                               
+Generated .//vendor/num_cpus-1.10.0/BUILD.bazel successfully
+Generated .//BUILD.bazel successfully
