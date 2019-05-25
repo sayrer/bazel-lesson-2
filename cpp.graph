@@ -1,0 +1,10 @@
+digraph mygraph {
+  node [shape=box];
+"//cpp:basic-app"
+"//cpp:basic-app" -> "//cpp:basic"
+"//cpp:basic-app" -> "//cpp:basic_app.cpp"
+"//cpp:basic_app.cpp"
+"//cpp:basic"
+"//cpp:basic" -> "//cpp:basic_library.cpp\n//cpp:basic_library.h"
+"//cpp:basic_library.cpp\n//cpp:basic_library.h"
+}

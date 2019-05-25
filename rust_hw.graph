@@ -1,0 +1,10 @@
+digraph mygraph {
+  node [shape=box];
+"//rust/hello_world:hello_world"
+"//rust/hello_world:hello_world" -> "//rust/hello_world:src/main.rs"
+"//rust/hello_world:hello_world" -> "//rust/hello_lib:hello_lib"
+"//rust/hello_world:src/main.rs"
+"//rust/hello_lib:hello_lib"
+"//rust/hello_lib:hello_lib" -> "//rust/hello_lib:src/lib.rs\n//rust/hello_lib:src/greeter.rs"
+"//rust/hello_lib:src/lib.rs\n//rust/hello_lib:src/greeter.rs"
+}

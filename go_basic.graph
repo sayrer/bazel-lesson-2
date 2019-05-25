@@ -1,0 +1,12 @@
+digraph mygraph {
+  node [shape=box];
+"//go/basic/cmd:command"
+"//go/basic/cmd:command" -> "//go/basic/cmd:go_default_library"
+"//go/basic/cmd:go_default_library"
+"//go/basic/cmd:go_default_library" -> "//go/basic/cmd:main.go"
+"//go/basic/cmd:go_default_library" -> "//go/basic:go_default_library"
+"//go/basic:go_default_library"
+"//go/basic:go_default_library" -> "//go/basic:basic.go"
+"//go/basic/cmd:main.go"
+"//go/basic:basic.go"
+}
