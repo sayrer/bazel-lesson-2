@@ -395,7 +395,7 @@ rust_library(
 )
 ```
 
-In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go). The file `rust/rustcpp_lib/src/infoprinter.rs` wraps our C functions in a Rust struct. Its `Drop` implementation will free the C string when the Rust struct falls out of scope. Its `Deref` implementation will allow it to be treated as a `str` in Rust code.
+In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go). The file `rust/rustcpp_lib/src/infoprinter.rs` wraps those C functions in a Rust struct. Its `Drop` implementation will free the C string when the Rust struct falls out of scope. Its `Deref` implementation will allow it to be treated as a `str` in Rust code.
 
 ```
 use libc::c_char;
