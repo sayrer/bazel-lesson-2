@@ -458,7 +458,7 @@ I'm a C++ string!
 
 Many Rust programs rely on a large number of dependencies from [crates.io](https://crates.io). At the moment, the [cargo-raze](https://github.com/google/cargo-raze) tool is the standard way to convert [crates.io](https://crates.io) dependencies to Bazel, but [rules_rust](https://github.com/bazelbuild/rules_rust) has a `cargo_crate` target on its roadmap, and the two projects will presumably merge.
 
-In `rust/rust_raze/cargo`, there's a fairly standard `Cargo.toml` file. Change to that directory, and install the `cargo` extensions for Bazel.
+In `rust/rust_raze/cargo`, there's a fairly standard `Cargo.toml` file that describes a dependency on the [num_cpus](https://crates.io/crates/num_cpus) crate. This crate measures the number of logical cores on a computer. Change to that directory, and install the `cargo` extensions for Bazel.
 
 ```
 $ cd rust/rust_raze/cargo/
