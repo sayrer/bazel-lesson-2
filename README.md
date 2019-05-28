@@ -395,7 +395,7 @@ rust_library(
 )
 ```
 
-In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go). The file `rust/rustcpp_lib/src/infoprinter.rs` wraps our C functions in a Rust struct. Its `Drop` implementation will free the C string when the Rust struct falls out of scope. Its `Deref` implementation will allow it to be treated as a `str` in Rust code.
+In `rust/rustcpp_lib`, there's an example showing a Rust struct that wraps the basic C/C++ library (the same one used in Go). The file `rust/rustcpp_lib/src/infoprinter.rs` wraps those C functions in a Rust struct. Its `Drop` implementation will free the C string when the Rust struct falls out of scope. Its `Deref` implementation will allow it to be treated as a `str` in Rust code.
 
 ```
 use libc::c_char;
@@ -458,7 +458,7 @@ I'm a C++ string!
 
 Many Rust programs rely on a large number of dependencies from [crates.io](https://crates.io). At the moment, the [cargo-raze](https://github.com/google/cargo-raze) tool is the standard way to convert [crates.io](https://crates.io) dependencies to Bazel, but [rules_rust](https://github.com/bazelbuild/rules_rust) has a `cargo_crate` target on its roadmap, and the two projects will presumably merge.
 
-In `rust/rust_raze/cargo`, there's a fairly standard `Cargo.toml` file. Change to that directory, and install the `cargo` extensions for Bazel.
+In `rust/rust_raze/cargo`, there's a fairly standard `Cargo.toml` file that describes a dependency on the [num_cpus](https://crates.io/crates/num_cpus) crate. This crate measures the number of logical cores on a computer. Change to that directory, and install the `cargo` extensions for Bazel.
 
 ```
 $ cd rust/rust_raze/cargo/
