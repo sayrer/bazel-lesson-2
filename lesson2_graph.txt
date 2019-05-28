@@ -80,7 +80,6 @@ digraph mygraph {
 "//rust/hello_lib:hello_lib"
 "//rust/hello_lib:hello_lib" -> "//rust/hello_lib:src/greeter.rs\n//rust/hello_lib:src/lib.rs"
 "//rust/hello_lib:src/greeter.rs\n//rust/hello_lib:src/lib.rs"
-"//rust/hello_lib:tests/greeting.rs"
 "//rust/hello_lib:src/greeter.rs\n//rust/hello_lib:src/lib.rs"
 "//rust/hello_lib:hello_lib_test"
 "//rust/hello_lib:hello_lib_test" -> "//rust/hello_lib:hello_lib"
